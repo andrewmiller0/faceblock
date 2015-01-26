@@ -1,10 +1,11 @@
 'use strict';
 angular.module('Faceblock.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaOauth, $http) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaOauth, $http, $ionicPopup) {
   // Form data for the login modal
   $scope.loginData = {};
   $scope.user = {};
+  $scope.followers = {};
 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -13,11 +14,40 @@ angular.module('Faceblock.controllers', [])
     $scope.modal = modal;
   });
 
-  $http.get('http://localhost:3000/me').success(function(data){
-    $scope.user.data = data
-  });
+  $scope.getMe = function(){
+    $http.get('http://localhost:3000/me').success(function(data){
+      $scope.user.data = data
+    });
+  }
+
+  $scope.getFollower = function(){
+    $http.get('http://localhost:3000/followers').success(function(data){
+      $scope.followers.data = data;
+    });
+  }
 
 
+  $scope.unfollow = function(){
+    //unfollow route goes here
+    console.log($scope.followers.data.screen_name);
+    $http.post('http://localhost:3000/unfollow/' + $scope.followers.data.screen_name).then(function(data){
+      console.log('Unfollowed ', data.screen_name);
+    }, function(err){
+      console.log('Unfollow error ', err);
+    });
+  }
+
+
+  $scope.showAlert = function(user) {
+    var alertPopup = $ionicPopup.alert({
+      title: 'Faceblocked!',
+      template: '@' + user + ' Unfollowed!'
+    });
+    alertPopup.then(function(res) {
+      $scope.getFollower();
+      console.log('Hi');
+    });
+  };
 
 
 

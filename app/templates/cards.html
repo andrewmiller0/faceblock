@@ -1,5 +1,5 @@
 
-<ion-view title="Cards">
+<ion-view title="FACEBLOCK">
 	<ion-nav-buttons side="left">
 		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
 	</ion-nav-buttons>
@@ -7,36 +7,30 @@
 		<div class="list card">
 
 			<div class="item item-avatar">
-				<img src="{{user.data.profile_image_url}}">
-				<h2>{{user.data.name}}</h2>
-				<p>{{user.data.description}}</p>
-			</div>
+				<img src="{{followers.data.profile_image_url}}">
+				<h2>{{followers.data.name}}</h2>
 
+				<p>@{{followers.data.screen_name}}</p>
+						<p>{{followers.data.description}}</p>
+			</div>
 			<div class="item item-body">
-				<h2>Latest Tweet:<h2>
-				<p>
-					{{user.data.status.text}}
-				</p>
 
-				<p>
-					<a href="#" class="subdued">1 Like</a>
-					<a href="#" class="subdued">5 Comments</a>
-				</p>
+				<div class="item">
+					<h2>Latest Tweet:<h2>
+					<p>{{followers.data.status.text}}</p>
+				</div>
 			</div>
 
-			<div class="item tabs tabs-secondary tabs-icon-left">
-				<a class="tab-item" href="#">
-					<i class="icon ion-thumbsup"></i>
-					Like
-				</a>
-				<a class="tab-item" href="#">
-					<i class="icon ion-chatbox"></i>
-					Comment
-				</a>
-				<a class="tab-item" href="#">
-					<i class="icon ion-share"></i>
-					Share
-				</a>
+
+			</div>
+
+			<div class="item">
+				<div class="button-bar">
+					<button class="button button-stable" type="submit" ng-click='getFollower();'><i class="icon ion-checkmark-round"></i> Follow</button>
+
+					<button class="button button-assertive" type="submit" ng-click='unfollow(); showAlert(followers.data.screen_name)'><i class="icon ion-close-round"></i> Unfollow</button>
+
+				</div>
 			</div>
 
 		</div>

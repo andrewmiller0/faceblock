@@ -6,6 +6,7 @@ var cors = require('cors');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var twit = require('twit');
+var twitter = require('twitter');
 
 var router = express.Router();
 
@@ -42,12 +43,18 @@ app.use('/users', users);
 
 
 var T = new twit({
-  consumer_key: 'qgyb3jM4W9c1YkgzEhBZtVSIx'
-  , consumer_secret: 'LM2ScBHKJ72OROQsbsbf80pRTecj8PVpI0fUaVxdt2suIV2YlR'
-  , access_token: '24021901-Rs8BHm9mTvpahZ6GQ4wAGBOL3jgnrczVJXHJPzkbf'
-  , access_token_secret: 'D8JsfZT7BPytV00IdQducGIM8A3Y4ZxSresV7K72SORhw'
+  consumer_key: 'bYNJDZnKsJ9rEukEVtyGBVnYj'
+  , consumer_secret: 'ULIaFCn4FeNb0QvMGm2THfVdjBnqZIYtshLn4xiyCUBeLPilnM'
+  , access_token: '24021901-ISFJP0LJhBCrubWT2BdFdFfdbFpJCLxTZvX3CWVqi'
+  , access_token_secret: 'KWFi2wrclyVFagOnNkihe6giAIQ35hc0P0Tg74kN6SVy7'
 });
 
+var client = new twitter({
+  consumer_key: 'bYNJDZnKsJ9rEukEVtyGBVnYj',
+  consumer_secret: 'ULIaFCn4FeNb0QvMGm2THfVdjBnqZIYtshLn4xiyCUBeLPilnM',
+  access_token_key: '24021901-ISFJP0LJhBCrubWT2BdFdFfdbFpJCLxTZvX3CWVqi',
+  access_token_secret: 'KWFi2wrclyVFagOnNkihe6giAIQ35hc0P0Tg74kN6SVy7'
+});
 
 app.get('/me', function(req, res) {
   console.log("Hit me route");
@@ -56,6 +63,31 @@ app.get('/me', function(req, res) {
       console.log('err')
     }
     res.send(data);
+  });
+});
+
+ var count = 0;
+
+app.get('/followers', function(req, res) {
+  T.get('friends/ids', function(err, data, response){
+    if(err){
+      console.log(err)
+    }
+    T.get('users/show/:user_id', {user_id : data.ids[count]}, function(err, data2, response){
+      if(err) console.log("users Error ", err);
+      count++;
+      res.send(data2);
+    });
+  });
+});
+
+app.post('/unfollow/:screen_name', function(req, res) {
+  console.log(req.params.screen_name);
+  // T.post('statuses/update', {status: 'Twitter API test tweet 2'},  function(error, tweet, response){
+  //   if (error) console.log(error);
+  T.post('friendships/destroy', {screen_name : req.params.screen_name}, function(err, data, response){
+    if(err) console.log("unfollow error ", err);
+    res.send(200, data);
   });
 });
 
