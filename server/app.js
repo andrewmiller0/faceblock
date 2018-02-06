@@ -39,23 +39,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
-
-
-var T = new twit({
-  consumer_key: 'bYNJDZnKsJ9rEukEVtyGBVnYj'
-  , consumer_secret: 'ULIaFCn4FeNb0QvMGm2THfVdjBnqZIYtshLn4xiyCUBeLPilnM'
-  , access_token: '24021901-ISFJP0LJhBCrubWT2BdFdFfdbFpJCLxTZvX3CWVqi'
-  , access_token_secret: 'KWFi2wrclyVFagOnNkihe6giAIQ35hc0P0Tg74kN6SVy7'
-});
-
-var client = new twitter({
-  consumer_key: 'bYNJDZnKsJ9rEukEVtyGBVnYj',
-  consumer_secret: 'ULIaFCn4FeNb0QvMGm2THfVdjBnqZIYtshLn4xiyCUBeLPilnM',
-  access_token_key: '24021901-ISFJP0LJhBCrubWT2BdFdFfdbFpJCLxTZvX3CWVqi',
-  access_token_secret: 'KWFi2wrclyVFagOnNkihe6giAIQ35hc0P0Tg74kN6SVy7'
-});
-
+app.use('/users', users)
 app.get('/me', function(req, res) {
   console.log("Hit me route");
   T.get('account/verify_credentials', function(err, data, send){
